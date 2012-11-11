@@ -6,10 +6,15 @@ This gem is tested against these ruby by travis-ci.org:
 - MRI 1.9.3
 - rubinius (1.9 mode)
 
+# What is this name ?
+
+Finding an unused name is getting hard so I finally settled for E.T. because why not ?  
+I did not want to hve a gem with a two letters name so here is eetee !
+
 # What is this gem ?
 
 I used the bacon test framework for quite some time now but I have some issues with it which
-are mostly unfixable without rewriting internals, this is what E.T. is !
+are mostly unfixable without rewriting internals, this is what E.T. is !  
 From the outside the specs should run the same on both but the changed internals allow better
 integration with guard amongst other things.
 
