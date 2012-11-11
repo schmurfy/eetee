@@ -35,7 +35,7 @@ module EEtee
         when :empty   then iputs " #{Color.red}✘#{Color.reset} #{test.label}"
         when :ok      then iputs " #{Color.green}✔#{Color.reset} #{test.label}"
         when :failed  then iputs " #{Color.red}✘#{Color.reset} #{test.label}"
-        when :error   then iputs " #{Color.red}☁ #{description}#{Color.reset} [#{@errors[-1].class}]"
+        when :error   then iputs " #{Color.red}☁ #{test.label}#{Color.reset} [#{@errors[-1].class}]"
         end
       end
       
