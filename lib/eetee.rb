@@ -1,6 +1,8 @@
 require_relative 'eetee/version'
 
+require_relative 'eetee/reporter'
 require_relative 'eetee/reporters/text'
+require_relative 'eetee/reporters/console'
 
 require_relative 'eetee/errors'
 require_relative 'eetee/assertion_wrapper'
@@ -45,7 +47,7 @@ module EEtee
     reporter.report_results()
   end
   
-  self.default_reporter_class = Reporters::Text
+  self.default_reporter_class = Reporters::Console
 end
 
 include EEtee

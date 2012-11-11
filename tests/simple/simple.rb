@@ -15,6 +15,11 @@ describe 'Tests' do
     @a.should == 3
   end
   
+  should 'wait 1s' do
+    sleep 1
+    1.should == 1
+  end
+  
   should 'works 2' do
     (40 + 5).should == 45
   end

@@ -13,4 +13,7 @@ Gem::Specification.new do |gem|
   gem.name          = "eetee"
   gem.require_paths = ["lib"]
   gem.version       = EEtee::VERSION
+  
+  
+  gem.add_dependency 'term-ansicolor', '~> 1.0.7'
 end
