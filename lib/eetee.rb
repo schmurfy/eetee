@@ -5,6 +5,7 @@ require_relative 'eetee/reporters/text'
 require_relative 'eetee/reporters/console'
 
 require_relative 'eetee/errors'
+require_relative 'eetee/shared'
 require_relative 'eetee/assertion_wrapper'
 require_relative 'eetee/test'
 require_relative 'eetee/context'
@@ -45,6 +46,10 @@ module EEtee
     reporter = EEtee.default_reporter_class.new
     Context.new(description, 0, reporter, &block)
     reporter.report_results()
+  end
+  
+  def shared(name, &block)
+    Shared.new(name, &block)
   end
   
   self.default_reporter_class = Reporters::Console

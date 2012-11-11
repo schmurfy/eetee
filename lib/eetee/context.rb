@@ -41,6 +41,15 @@ module EEtee
     def should(label, &block)
       Test.new(label, @_reporter, &block)
     end
+    
+    def run_shared(name, *args)
+      Shared.run(name, @_reporter, *args)
+    end
+    
+    def in_scope(&block)
+      instance_eval(&block)
+    end
+    
   end
 
 end
