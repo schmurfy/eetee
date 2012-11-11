@@ -3,6 +3,8 @@ require 'guard/guard'
 
 require 'eetee'
 
+gem 'guard', '~> 1.5.3'
+
 module Guard
   class EEtee < Guard
 
