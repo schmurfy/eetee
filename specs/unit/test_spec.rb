@@ -1,4 +1,4 @@
-require_relative '../spec_helper'
+require File.expand_path('../../spec_helper', __FILE__)
 
 describe 'Test' do
   before do
@@ -24,16 +24,38 @@ describe 'Test' do
   
   should 'wrap errors in EEtee::Error' do
     
-    err = ->{
-      Thread.new do
+    err = nil
+    Thread.new do
+      begin
         EEtee::Test.new("a test", @reporter) do
           raise "error"
         end
-      end.join
-    }.should.raise(EEtee::Error)
+      rescue => ex
+        err = ex
+      end
+    end.join
+      
+    err.should.be_a EEtee::Error
     
     err.error.should.be_a RuntimeError
     err.error.message.should == "error"
+    err.test.should.be_a EEtee::Test
+  end
+  
+  should 'associate current test to raised assertions' do
+    err = nil
+    Thread.new do
+      begin
+        EEtee::Test.new("a test", @reporter) do
+          1.should == 2
+        end
+      rescue => ex
+        err = ex
+      end
+    end.join
+    
+    err.should.be_a EEtee::AssertionFailed
+    err.test.should.be_a EEtee::Test
   end
   
   

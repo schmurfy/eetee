@@ -20,11 +20,7 @@ module EEtee
     end
     
     def run(&block)
-      if defined?(super)
-        super{ instance_eval(&block) }
-      else
-        instance_eval(&block)
-      end
+      instance_eval(&block)
     end
     
     def before(&block)
@@ -44,11 +40,6 @@ module EEtee
     
     def should(label, &block)
       Test.new(label, @_reporter, &block)
-    end
-    
-    
-    def increment_assertions
-      @_reporter.increment_assertions()
     end
   end
 

@@ -6,7 +6,7 @@ module EEtee
       
       invert_helper(
         "expected instance of #{klass}, got #{object_class}",
-        "not expected instance of #{klass}"
+        "instance of #{klass} not expected"
       ) do
         object_class.should == klass
       end

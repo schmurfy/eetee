@@ -2,15 +2,20 @@ module EEtee
   module Reporters
     
     class Text
+      attr_reader :failures, :errors, :assertion_count, :test_count
+      
       def initialize
         @errors = []
         @failures = []
+        @empty = []
+        
         @indent = 0
-        @assertions = 0
+        @assertion_count = 0
+        @test_count = 0
       end
       
       def increment_assertions
-        @assertions += 1
+        @assertion_count += 1
       end
       
       def around_context(ctx)
@@ -23,9 +28,18 @@ module EEtee
       end
       
       def around_test(test)
+        before_assertions = @assertion_count
+        
         iprint "- #{test.label}... "
         yield
-        puts "OK"
+        
+        if before_assertions == @assertion_count
+          puts "EMPTY"
+          @empty << test
+        else
+          puts "OK"
+          @test_count += 1
+        end
         
       rescue EEtee::AssertionFailed => err
         @failures << err
@@ -41,8 +55,8 @@ module EEtee
         report_errors() unless @errors.empty?
         
         puts ""
-        puts "#{@assertions} Assertions"
-        puts "Completed with #{@errors.size} errors and #{@failures.size} failures"
+        puts "#{@test_count} Tests / #{@assertion_count} Assertions"
+        puts "#{@errors.size} Errors / #{@failures.size} failures"
       end
 
     private
@@ -72,8 +86,16 @@ module EEtee
         end
       end
       
-      def dump_trace(err)
-        err.backtrace.each do |line|
+      def dump_trace(err, cleanup = true)
+        lines = err.backtrace
+        
+        if cleanup
+          lines.reject! do |line|
+            line.include?('gems')
+          end
+        end
+        
+        lines.each do |line|
           puts "      #{line}"
         end
 

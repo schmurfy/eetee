@@ -22,12 +22,12 @@ require 'mocha_standalone'
   
   
 class MochaCounterWrapper
-  def initialize(context)
-    @context = context
+  def initialize(reporter)
+    @reporter = reporter
   end
   
   def increment
-    @context.increment_assertions()
+    @reporter.increment_assertions()
   end
 end
 
