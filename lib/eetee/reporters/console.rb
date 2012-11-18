@@ -42,6 +42,7 @@ module EEtee
       def report_results
         report_failures() unless @failures.empty?
         report_errors() unless @errors.empty?
+        report_empty() unless @empty.empty?
         
         puts ""
         puts "#{@test_count} Tests / #{@assertion_count} Assertions"
@@ -77,6 +78,13 @@ module EEtee
         end.compact.reverse.join(' ')
       end
       
+      def report_empty
+        puts "\nEmpty tests:"
+        @empty.each do |test|
+          puts "- #{test.label}"
+        end
+      end
+      
       def report_failures
         puts "\nFailures:"
         @failures.each do |f|
@@ -99,7 +107,7 @@ module EEtee
         
         if cleanup
           lines.reject! do |line|
-            line.include?('gems')
+            line.include?('.rbenv')
           end
         end
         
