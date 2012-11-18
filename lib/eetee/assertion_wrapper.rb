@@ -67,6 +67,10 @@ module EEtee
       @invert = true
       self
     end
+    
+    def be
+      self
+    end
   
   private
     ##

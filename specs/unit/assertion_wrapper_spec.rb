@@ -108,8 +108,16 @@ describe 'AssertionWrapper' do
         ->{ w1.be_a String }.should.raise(EEtee::AssertionFailed)
       end
 
-      
     end
+    
+    describe 'be' do
+      should 'be transparent (syntax sugar)' do
+        w1 = EEtee::AssertionWrapper.new("string")
+        w1.be == "string"
+      end
+    end
+    
+    
   end
   
 end
