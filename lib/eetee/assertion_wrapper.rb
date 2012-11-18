@@ -32,6 +32,16 @@ module EEtee
       
       err
     end
+    
+    def close?(target, error_margin)
+      invert_helper(
+        "expected #{target} += #{error_margin}, got #{target}",
+        "expected to be outside of #{target} += #{error_margin}, got #{target}"
+      ) do
+        (target-error_margin .. target+error_margin).should.include?(@object)
+      end
+    end
+    
   end
   
   class AssertionWrapper < BasicObject

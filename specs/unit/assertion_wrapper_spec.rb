@@ -117,6 +117,17 @@ describe 'AssertionWrapper' do
       end
     end
     
+    describe 'close?' do
+      should 'not raise an error if number in range' do
+        w1 = EEtee::AssertionWrapper.new(3.4)
+        w1.close?(3, 0.4)
+      end
+      
+      should 'raise an error if number outside range' do
+        w1 = EEtee::AssertionWrapper.new(3.4)
+        ->{ w1.close?(3, 0.3) }.should.raise(EEtee::AssertionFailed)
+      end
+    end
     
   end
   
