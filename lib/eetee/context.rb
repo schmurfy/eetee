@@ -13,7 +13,7 @@ module EEtee
         vars[name] = value
       end
       
-      Context.new(description, @_level + 1, @_reporter, vars, &block)
+      Context.new(description, @_level + 1, @_reporter, vars, @_focus_mode, &block)
     end
     
     def should(label, opts = {}, &block)
@@ -21,7 +21,7 @@ module EEtee
     end
         
     def it(label, opts = {}, &block)
-      if !@focus_mode || opts[:focus]
+      if !@_focus_mode || opts[:focus]
         Test.new(label, @_reporter, &block)
       end
     end
@@ -40,7 +40,7 @@ module EEtee
         instance_variable_set(name, value)
       end
       
-      @focus_mode = focus_mode
+      @_focus_mode = focus_mode
       
       @_description = description
       @_level = level

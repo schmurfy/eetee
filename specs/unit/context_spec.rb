@@ -51,4 +51,41 @@ describe 'Context' do
     err.should == nil
   end
   
+  should 'only run focused test' do
+    err = nil
+    n = 0
+    
+    Thread.new do
+      begin
+        ctx = EEtee::Context.new("a context", 0, @reporter, {:@a => 98, :@b => "string"}, true){ }
+        ctx.should("test something", :focus => true){ n = 1 }
+        ctx.should("test something"){ n = 2 }
+      rescue Exception => ex
+        err = ex
+      end
+    end.join
+    
+    n.should == 1
+    err.should == nil
+  end
+  
+  should 'only run focused test (nested context)' do
+    err = nil
+    n = 0
+    
+    Thread.new do
+      begin
+        ctx = EEtee::Context.new("a context", 0, @reporter, {:@a => 98, :@b => "string"}, true){ }
+        ctx2 = ctx.describe("nested"){}
+        ctx2.should("test something", :focus => true){ n = 1 }
+        ctx2.should("test something"){ n = 2 }
+      rescue Exception => ex
+        err = ex
+      end
+    end.join
+    
+    n.should == 1
+    err.should == nil
+  end
+  
 end
