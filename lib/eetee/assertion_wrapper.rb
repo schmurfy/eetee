@@ -52,7 +52,7 @@ module EEtee
     def method_missing(name, *args, &block)
       ::EEtee.current_test.reporter.increment_assertions()
       ret = @object.__send__(name, *args, &block)
-      # if (!@invert && !ret) || (@invert && ret)
+      
       if !!ret == !!@invert
         if args.empty?
           msg = "#{@object.inspect}.#{name}() => #{ret}"
