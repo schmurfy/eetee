@@ -5,13 +5,11 @@ require_relative 'eetee/reporters/text'
 require_relative 'eetee/reporters/console'
 
 require_relative 'eetee/errors'
-require_relative 'eetee/shared'
 require_relative 'eetee/assertion_wrapper'
 require_relative 'eetee/test'
 require_relative 'eetee/context'
+require_relative 'eetee/shared'
 require_relative 'eetee/runner'
-
-require_relative 'eetee/ext/mocha'
 
 
 

@@ -37,11 +37,18 @@ describe 'Context' do
   end
   
   should 'create a test' do
-    EEtee::Test.expects(:new).with("a test", @reporter)
+    err = nil
+    EEtee::Test.expects(:new).with("should test something", @reporter)
     Thread.new do
-      ctx = EEtee::Context.new("a context", 0, @reporter, :@a => 98, :@b => "string"){ }
-      ctx.should("a test"){ 1.should == 1 }
+      begin
+        ctx = EEtee::Context.new("a context", 0, @reporter, :@a => 98, :@b => "string"){ }
+        ctx.should("test something"){ 1.should == 1 }
+      rescue Exception => ex
+        err = ex
+      end
     end.join
+    
+    err.should == nil
   end
   
 end

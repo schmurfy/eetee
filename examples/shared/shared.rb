@@ -14,8 +14,10 @@ shared(:valid_object) do |obj, n|
     obj.should.respond_to?(:to_i)
   end
   
-  should 'have a length higher than 2' do
-    obj.size.should > 2
+  describe 'nested' do
+    should 'have a length higher than 2' do
+      obj.size.should > 2
+    end
   end
 end
 

@@ -24,6 +24,7 @@ module Guard
     # Called when `stop|quit|exit|s|q|e + enter` is pressed (when Guard quits).
     # @raise [:task_has_failed] when stop has failed
     def stop
+      puts "Guard::EEtee stopped."
     end
 
     # Called when `reload|r|z + enter` is pressed.
@@ -47,15 +48,15 @@ module Guard
       runner.run_files(paths)
       runner.report_results()
       
-      all_specs = runner.test_count
+      tests = runner.test_count
       failures = runner.failures.size + runner.errors.size
       
       if failures > 0
-        Notifier.notify("Specs: #{failures} Failures (#{all_specs} specs)",
+        Notifier.notify("Specs: #{failures} Failures (#{tests} tests)",
             :image => :failed
           )
       else
-        Notifier.notify("Specs: OK (#{all_specs} specs)",
+        Notifier.notify("Specs: OK (#{tests} tests)",
             :image => :success
           )
       end

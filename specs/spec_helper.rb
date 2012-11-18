@@ -3,8 +3,7 @@ require 'bundler/setup'
 
 require 'eetee'
 
-# require 'bacon/ext/mocha'
-# require 'bacon/ext/em'
+require 'eetee/ext/mocha'
 
 Thread.abort_on_exception = true
 
