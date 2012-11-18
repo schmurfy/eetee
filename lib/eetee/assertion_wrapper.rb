@@ -35,13 +35,14 @@ module EEtee
   end
   
   class AssertionWrapper < BasicObject
-    include Assertions
     
     instance_methods.each do |name|
       if name =~ /\?|^\W+$/
         undef_method(name)
       end
     end
+    
+    include Assertions
     
     def initialize(object)
       @object = object
