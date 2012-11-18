@@ -5,22 +5,6 @@ require 'mocha_standalone'
 # This extension ensure that mocha expectations are considered
 # as bacon tests. Amongst other thing it allows to have a test
 # containing only mocha expectations.
-# 
-# module EEtee
-#   class Context
-#     def freeze_time(t = Time.now)
-#       Time.stubs(:now).returns(t)
-#       if block_given?
-#         yield
-#         Time.unstub(:now)
-#       end
-#     end
-    
-#   end
-# end
-
-  
-  
 class MochaCounterWrapper
   def initialize(reporter)
     @reporter = reporter

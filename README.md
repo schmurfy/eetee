@@ -76,8 +76,13 @@ The guard is included inside the gem, just look at the Guardfile for the gem for
 ## mocha
 Allow mocha expectations to be considered as E.T. expectations.
 
-# rack
+## rack
 Boilet plate around rack-test to test rack applications.
+
+## time
+Some time helpers:
+  time_block{ ... } => return execution time in milliseconds
+  freeze_time => Time.now will return the same time inside the block
 
 
 # Setting up development environmeent
