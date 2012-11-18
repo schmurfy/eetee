@@ -1,12 +1,15 @@
 module EEtee
   class Shared
-    attr_accessor :_reporter
+    attr_accessor :_reporter, :_level
+    
+    include SharedContextMethods
     
     @@shared = {}
     
-    def self.run(name, reporter, *args)
+    def self.run(name, reporter, level, *args)
       sh = @@shared[name]
       sh._reporter = reporter
+      sh._level = level
       sh.run(*args)
     end
     
@@ -18,10 +21,6 @@ module EEtee
     
     def run(*args)
       instance_exec(*args, &@_block)
-    end
-    
-    def should(label, &block)
-      Test.new(label, _reporter, &block)
     end
     
   end

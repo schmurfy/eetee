@@ -22,6 +22,14 @@ module EEtee
     def default_reporter_class
       @reporter
     end
+    
+    def enable_focus_mode=(value)
+      @enable_focus_mode = value
+    end
+    
+    def enable_focus_mode
+      @enable_focus_mode
+    end
   end
   
   
@@ -40,9 +48,9 @@ module EEtee
     end
   end
 
-  def describe(description, &block)
+  def describe(description, enable_focus_mode = EEtee.enable_focus_mode, &block)
     reporter = EEtee.default_reporter_class.new
-    Context.new(description, 0, reporter, &block)
+    Context.new(description, 0, reporter, {}, enable_focus_mode, &block)
     reporter.report_results()
   end
   

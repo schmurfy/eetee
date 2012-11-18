@@ -9,6 +9,7 @@ module EEtee
     
     def initialize
       @reporter = EEtee.default_reporter_class.new
+      @focus_mode = false
     end
     
     def run(&block)
@@ -32,6 +33,12 @@ module EEtee
       paths.each do |path|
         if File.exist?(path)
           data = File.read(path)
+          if data =~ /^\s+should.*?,\s+:focus => true do$/
+            puts "Focus enabled."
+            @focus_mode = true
+          else
+            @focus_mode = false
+          end
           instance_eval(data, path)
         else
           puts "!!! file does not exists: #{path}"
@@ -47,7 +54,7 @@ module EEtee
     end
     
     def describe(description, &block)
-      Context.new(description, 0, @reporter, &block)
+      Context.new(description, 0, @reporter, {}, @focus_mode, &block)
     end
   end
   
