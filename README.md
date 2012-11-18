@@ -24,6 +24,7 @@ My goals were:
 - specs file should be executable as is, there is no "eetee" binary
 - specs can be grouped without changing anything in them (run all the spec folder)
 - keep bacon syntax as I am used to it and like it
+- a set of extensions I used often (but not required by default)
 
 # Usage
 
@@ -67,6 +68,16 @@ and to run it:
 $ ruby test.rb
 ```
 
+# Available extensions
+
+## guard
+The guard is included inside the gem, just look at the Guardfile for the gem for the syntax (unfortunately guard init excepts the guard to live in a separate gem)
+
+## mocha
+Allow mocha expectations to be considered as E.T. expectations.
+
+# rack
+Boilet plate around rack-test to test rack applications.
 
 
 # Setting up development environmeent
