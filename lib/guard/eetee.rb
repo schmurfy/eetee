@@ -1,8 +1,6 @@
 require 'guard'
 require 'guard/guard'
 
-require 'eetee'
-
 gem 'guard', '~> 1.5.3'
 
 module Guard
@@ -44,22 +42,29 @@ module Guard
     # @param [Array<String>] paths the changes files or paths
     # @raise [:task_has_failed] when run_on_change has failed
     def run_on_changes(paths)
-      runner = EEtee::Runner.new
-      runner.run_files(paths)
-      runner.report_results()
-      
-      tests = runner.test_count
-      failures = runner.failures.size + runner.errors.size
-      
-      if failures > 0
-        Notifier.notify("Specs: #{failures} Failures (#{tests} tests)",
-            :image => :failed
-          )
-      else
-        Notifier.notify("Specs: OK (#{tests} tests)",
-            :image => :success
-          )
+      pid = Kernel.fork do
+        require 'eetee'
+        runner = EEtee::Runner.new
+        runner.run_files(paths)
+        runner.report_results()
+        
+        tests = runner.test_count
+        failures = runner.failures.size + runner.errors.size
+        
+        focus_mode = runner.focus_mode
+        
+        if failures > 0
+          Notifier.notify("Specs: #{failures} Failures (#{tests} tests) #{focus_mode ? '(focus)' : ''}",
+              :image => :failed
+            )
+        else
+          Notifier.notify("Specs: OK (#{tests} tests) #{focus_mode ? '(focus)' : ''}",
+              :image => :success
+            )
+        end
       end
+      
+      Process.wait(pid)
     end
 
     # Called on file(s) deletions that the Guard watches.

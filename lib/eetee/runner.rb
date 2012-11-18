@@ -4,6 +4,7 @@ module EEtee
     
   class Runner
     extend Forwardable
+    attr_reader :focus_mode
     
     def_delegators :@reporter, :failures, :errors, :assertions, :test_count
     
