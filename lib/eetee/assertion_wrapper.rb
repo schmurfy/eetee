@@ -24,8 +24,8 @@ module EEtee
       end
       
       invert_helper(
-        "expected to raise #{error_class}, got #{err.class}",
-        "expected not to raise #{error_class}"
+        "expected to raise #{error_class}, got #{err.class} (#{err.message})",
+        "expected not to raise #{error_class} (#{err.message})"
       ) do
         err.class.should == error_class
       end
