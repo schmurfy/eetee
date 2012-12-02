@@ -3,7 +3,9 @@ require File.expand_path('../../spec_helper', __FILE__)
 describe 'Test' do
   before do
     @reporter = stub('Reporter')
+    @reporter.stubs(:increment_assertions)
     @reporter.stubs(:around_test).yields
+    EEtee.stubs(:current_reporter).returns(@reporter)
   end
   
   should 'execute given block in context' do

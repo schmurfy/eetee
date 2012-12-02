@@ -60,9 +60,7 @@ module EEtee
     end
     
     def method_missing(name, *args, &block)
-      if ::EEtee.current_test
-        ::EEtee.current_test.reporter.increment_assertions()
-      end
+      ::EEtee.current_reporter.increment_assertions()
       
       ret = @object.__send__(name, *args, &block)
       

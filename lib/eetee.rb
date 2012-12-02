@@ -30,6 +30,16 @@ module EEtee
     def enable_focus_mode
       @enable_focus_mode
     end
+    
+    
+    
+    def current_reporter
+      @reporter_instance
+    end
+    
+    def current_reporter=(reporter)
+      @reporter_instance = reporter
+    end
   end
   
   

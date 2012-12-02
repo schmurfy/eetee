@@ -53,10 +53,15 @@ module EEtee
     end
     
     def run(&block)
-      if defined? super
-        super{ instance_eval(&block) }
-      else
+      run = ->{
+        EEtee.current_reporter = @_reporter
         instance_eval(&block)
+      }
+      
+      if defined? super
+        super(&run)
+      else
+        run.call()
       end
     end
     
