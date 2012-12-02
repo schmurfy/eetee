@@ -2,7 +2,8 @@ module EEtee
   
   module SharedContextMethods
     def before(&block)
-      instance_eval(&block)
+      @before ||= []
+      @before << block
     end
     
     def describe(description, &block)
@@ -22,6 +23,7 @@ module EEtee
         
     def it(label, opts = {}, &block)
       if !@_focus_mode || opts[:focus]
+        (@before || []).each{|b| instance_eval(&b) }
         Test.new(label, @_reporter, &block)
       end
     end
@@ -51,7 +53,11 @@ module EEtee
     end
     
     def run(&block)
-      instance_eval(&block)
+      if defined? super
+        super{ instance_eval(&block) }
+      else
+        instance_eval(&block)
+      end
     end
     
     def run_shared(name, *args)

@@ -22,8 +22,20 @@ describe 'Context' do
     Thread.new do
       ctx = EEtee::Context.new("a context", 0, @reporter, :@a => 234){ }
       ctx.before{ a = @a }
+      ctx.should("do nothing"){} # just to run the before block
     end.join
     a.should == 234
+  end
+  
+  should 'run the before blocks before every test' do
+    n = 0
+    Thread.new do
+      ctx = EEtee::Context.new("a context", 0, @reporter){ }
+      ctx.before{ n = 1 }
+      ctx.should("test 1"){ n += 2 }
+      ctx.should("test 2"){ n += 2 }
+    end.join
+    n.should == 3
   end
   
   should 'copy instance variables in nested contexts' do
