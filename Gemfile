@@ -11,4 +11,6 @@ group(:test) do
   gem 'guard'
   gem 'rb-fsevent'
   gem 'growl'
+  
+  gem 'eventmachine',    '~> 1.0.0'
 end

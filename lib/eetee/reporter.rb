@@ -18,6 +18,16 @@ module EEtee
       @assertion_count += 1
     end
     
+    ##
+    # Declare an error, only use this
+    # when we are "outside" of the current
+    # flow like with EventMachine
+    # 
+    # @param [RuntimeError] an error
+    def add_error(err)
+      @errors << err
+    end
+    
     def around_context(ctx, &block)
       @indent += 1
       block.call()
