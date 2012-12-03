@@ -5,6 +5,12 @@ gem 'guard', '~> 1.5.3'
 
 module Guard
   class EEtee < Guard
+    
+    def self.template(*)
+      File.read(
+          File.expand_path('../Guardfile', __FILE__)
+        )
+    end
 
     # Initialize a Guard.
     # @param [Array<Guard::Watcher>] watchers the Guard file watchers
