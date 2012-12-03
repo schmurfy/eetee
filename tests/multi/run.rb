@@ -6,5 +6,5 @@ require "eetee"
 include EEtee
 
 
-Runner.new.run_files("file*.rb")
+Runner.new.run_pattern("file*.rb")
 
