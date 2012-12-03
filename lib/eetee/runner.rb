@@ -34,7 +34,7 @@ module EEtee
       paths.each do |path|
         if File.exist?(path)
           data = File.read(path)
-          if data =~ /^\s+should.*?,\s+:focus => true do$/
+          if data =~ /^\s+(should|it).*?,\s+:focus => true do$/
             puts "Focus enabled."
             @focus_mode = true
           else
