@@ -32,7 +32,7 @@ module EEtee
 
         
         case ret
-        when :empty   then iputs " #{Color.red}✘#{Color.reset} #{test.label}"
+        when :empty   then iputs " #{Color.bold}#{Color.yellow}~#{Color.reset} #{test.label}"
         when :ok      then iputs " #{Color.green}✔#{Color.reset} #{test.label}"
         when :failed  then iputs " #{Color.red}✘#{Color.reset} #{test.label}"
         when :error   then iputs " #{Color.red}☁ #{test.label}#{Color.reset} [#{@errors[-1].class}]"
