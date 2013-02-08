@@ -1,10 +1,8 @@
 require 'guard'
 require 'guard/guard'
 
-gem 'guard', '~> 1.5.3'
-
 module Guard
-  class EEtee < Guard
+  class Eetee < Guard
     
     def self.template(*)
       File.read(
