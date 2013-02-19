@@ -27,6 +27,18 @@ describe 'Context' do
     a.should == 234
   end
   
+  should 'run after block in same context' do
+    a = nil
+    Thread.new do
+      EEtee::Context.new("a context", 0, @reporter, :@a => 234) do
+        after{ a = @a }
+        should("do nothing"){} # just to run the before block
+      end
+    end.join
+    a.should == 234
+  end
+  
+  
   should 'run the before blocks before every test' do
     n = 0
     Thread.new do
@@ -34,6 +46,17 @@ describe 'Context' do
       ctx.before{ n = 1 }
       ctx.should("test 1"){ n += 2 }
       ctx.should("test 2"){ n += 2 }
+  should 'run the after blocks after every test' do
+    n = 0
+    Thread.new do
+      EEtee::Context.new("a context", 0, @reporter) do
+        after{ n = 1 }
+        should("test 1"){ n += 2 }
+        should("test 2"){ n += 2 }
+      end
+    end.join
+    n.should == 1
+  end
     end.join
     n.should == 3
   end

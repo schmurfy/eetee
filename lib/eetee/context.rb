@@ -6,6 +6,11 @@ module EEtee
       @before << block
     end
     
+    def after(&block)
+      @after ||= []
+      @after << block
+    end
+    
     def describe(description, &block)
       vars = {}
       
