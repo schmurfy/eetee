@@ -20,9 +20,10 @@ describe 'Context' do
   should 'run before block in same context' do
     a = nil
     Thread.new do
-      ctx = EEtee::Context.new("a context", 0, @reporter, :@a => 234){ }
-      ctx.before{ a = @a }
-      ctx.should("do nothing"){} # just to run the before block
+      EEtee::Context.new("a context", 0, @reporter, :@a => 234) do
+        before{ a = @a }
+        should("do nothing"){} # just to run the before block
+      end
     end.join
     a.should == 234
   end
@@ -42,10 +43,15 @@ describe 'Context' do
   should 'run the before blocks before every test' do
     n = 0
     Thread.new do
-      ctx = EEtee::Context.new("a context", 0, @reporter){ }
-      ctx.before{ n = 1 }
-      ctx.should("test 1"){ n += 2 }
-      ctx.should("test 2"){ n += 2 }
+      EEtee::Context.new("a context", 0, @reporter) do
+        before{ n = 1 }
+        should("test 1"){ n += 2 }
+        should("test 2"){ n += 2 }
+      end
+    end.join
+    n.should == 3
+  end
+  
   should 'run the after blocks after every test' do
     n = 0
     Thread.new do
@@ -91,8 +97,9 @@ describe 'Context' do
   should 'copy instance variables in nested contexts' do
     a = b = nil
     Thread.new do
-      ctx = EEtee::Context.new("a context", 0, @reporter, :@a => 98, :@b => "string"){ }
-      ctx.describe("nested context"){ a = @a; b = @b }
+      EEtee::Context.new("a context", 0, @reporter, :@a => 98, :@b => "string") do
+        describe("nested context"){ a = @a; b = @b }
+      end
     end.join
     a.should == 98
     b.should == "string"
@@ -103,8 +110,9 @@ describe 'Context' do
     EEtee::Test.expects(:new).with("should test something", @reporter)
     Thread.new do
       begin
-        ctx = EEtee::Context.new("a context", 0, @reporter, :@a => 98, :@b => "string"){ }
-        ctx.should("test something"){ 1.should == 1 }
+        EEtee::Context.new("a context", 0, @reporter, :@a => 98, :@b => "string") do
+          should("test something"){ 1.should == 1 }
+        end
       rescue Exception => ex
         err = ex
       end
@@ -119,9 +127,10 @@ describe 'Context' do
     
     Thread.new do
       begin
-        ctx = EEtee::Context.new("a context", 0, @reporter, {:@a => 98, :@b => "string"}, true){ }
-        ctx.should("test something", :focus => true){ n = 1 }
-        ctx.should("test something"){ n = 2 }
+        EEtee::Context.new("a context", 0, @reporter, {:@a => 98, :@b => "string"}, true) do
+          should("test something", :focus => true){ n = 1 }
+          should("test something"){ n = 2 }
+        end
       rescue Exception => ex
         err = ex
       end
@@ -137,10 +146,12 @@ describe 'Context' do
     
     Thread.new do
       begin
-        ctx = EEtee::Context.new("a context", 0, @reporter, {:@a => 98, :@b => "string"}, true){ }
-        ctx2 = ctx.describe("nested"){}
-        ctx2.should("test something", :focus => true){ n = 1 }
-        ctx2.should("test something"){ n = 2 }
+        EEtee::Context.new("a context", 0, @reporter, {:@a => 98, :@b => "string"}, true) do
+          describe("nested") do
+            should("test something", :focus => true){ n = 1 }
+            should("test something"){ n = 2 }
+          end
+        end
       rescue Exception => ex
         err = ex
       end
