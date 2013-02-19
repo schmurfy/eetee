@@ -34,8 +34,12 @@ module EEtee
         
     def it(label, opts = {}, &block)
       if !@_focus_mode || opts[:focus]
-        (@before || []).each{|b| instance_eval(&b) }
-        Test.new(label, @_reporter, &block)
+        begin
+          (@before || []).each{|b| instance_eval(&b) }
+          Test.new(label, @_reporter, &block)
+        ensure
+          (@after || []).each{|b| instance_eval(&b) }
+        end
       end
     end
   end

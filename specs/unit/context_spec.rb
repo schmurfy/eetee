@@ -58,6 +58,20 @@ describe 'Context' do
     n.should == 1
   end
   
+  should 'run the after blocks after when an error occured in test' do
+    n = 0
+    Thread.new do
+      begin
+        EEtee::Context.new("a context", 0, @reporter) do
+          after{ n = 1 }
+          should("test 1"){ raise "toto" }
+        end
+      rescue
+      end
+    end.join
+    n.should == 1
+  end
+  
   should 'only run the rigth before blocks' do
     n = 0
     Thread.new do
