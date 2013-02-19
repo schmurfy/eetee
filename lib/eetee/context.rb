@@ -1,5 +1,7 @@
 module EEtee
   
+  NOT_CLONEABLE_TYPES = [Fixnum, NilClass, TrueClass, FalseClass].freeze
+    
   module SharedContextMethods
     def before(&block)
       @before ||= []
@@ -16,7 +18,11 @@ module EEtee
       
       instance_variables.reject{|name| name.to_s.start_with?('@_') }.each do |name|
         value = instance_variable_get(name)
-        vars[name] = value
+        if NOT_CLONEABLE_TYPES.include?(value.class)
+          vars[name] = value
+        else
+          vars[name] = value.clone
+        end
       end
       
       Context.new(description, @_level + 1, @_reporter, vars, @_focus_mode, &block)

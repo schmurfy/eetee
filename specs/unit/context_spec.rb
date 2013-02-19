@@ -57,6 +57,19 @@ describe 'Context' do
     end.join
     n.should == 1
   end
+  
+  should 'only run the rigth before blocks' do
+    n = 0
+    Thread.new do
+      EEtee::Context.new("a context", 0, @reporter) do
+        before{ n = 1 }
+        
+        describe("sub context") do
+          before { n = 10 }
+        end
+        
+        should("test 1"){ n += 2 }
+      end
     end.join
     n.should == 3
   end
