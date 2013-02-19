@@ -28,6 +28,28 @@ describe 'Context' do
     a.should == 234
   end
   
+  should 'allow tests to use the context description' do
+    a = nil
+    Thread.new do
+      EEtee::Context.new("a context", 0, @reporter, :@a => 234) do
+        should("do nothing"){ a = context_description() }
+      end
+    end.join
+    a.should == "a context"
+  end
+  
+  should 'allow tests to use the nested context description' do
+    a = nil
+    Thread.new do
+      EEtee::Context.new("a context", 0, @reporter, :@a => 234) do
+        describe("sub context") do
+          should("do nothing"){ a = context_description() }
+        end
+      end
+    end.join
+    a.should == "sub context"
+  end
+  
   should 'run after block in same context' do
     a = nil
     Thread.new do

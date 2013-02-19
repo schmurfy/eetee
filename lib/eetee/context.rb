@@ -52,6 +52,8 @@ module EEtee
     def description; @_description; end
     def level; @_level; end
     
+    alias_method :context_description, :description
+    
     def initialize(description, level, reporter, vars = {}, focus_mode = false, &block)
       vars.each do |name, value|
         instance_variable_set(name, value)
