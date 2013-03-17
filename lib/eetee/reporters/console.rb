@@ -6,7 +6,7 @@ module EEtee
   module Reporters
     
     ##
-    # Advanced text output designed to be used in a open
+    # Advanced text output designed to be used in an open
     # console.
     # 
     class Console < Reporter
