@@ -34,11 +34,11 @@ module EEtee
     
     
     def current_reporter
-      @reporter_instance
+      Thread.current[:eetee_reporter]
     end
     
     def current_reporter=(reporter)
-      @reporter_instance = reporter
+      Thread.current[:eetee_reporter] = reporter
     end
   end
   

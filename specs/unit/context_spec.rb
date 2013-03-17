@@ -9,11 +9,20 @@ describe 'Context' do
   
   should 'run block in context' do
     a = nil
+    test_th_id = nil
+    
+    @reporter.stubs(:increment_assertions)
+    
+    th_id = Thread.current.object_id
+    
     Thread.new do
       EEtee::Context.new("a context", 0, @reporter, :@a => 34) do
+        test_th_id = Thread.current.object_id
         a = @a
       end
     end.join
+    
+    th_id.should.not == test_th_id
     a.should == 34
   end
   

@@ -35,8 +35,8 @@ module EEtee
     
     def close?(target, error_margin)
       invert_helper(
-        "expected #{target} += #{error_margin}, got #{target}",
-        "expected to be outside of #{target} += #{error_margin}, got #{target}"
+        "expected #{target} += #{error_margin}, got #{@object}",
+        "expected to be outside of #{target} += #{error_margin}, got #{@object}"
       ) do
         (target-error_margin .. target+error_margin).should.include?(@object)
       end
@@ -65,7 +65,9 @@ module EEtee
       ret = @object.__send__(name, *args, &block)
       
       if !!ret == !!@invert
-        if args.empty?
+        if ((name == :'==') || (name == :'!=')) && (!@object.nil? || !args[0].nil?)
+          msg = "\n#{@object}\n#{name}\n#{args[0]}\n=> #{ret} (size: #{@object.size} / #{args[0].size})"
+        elsif args.empty?
           msg = "#{@object.inspect}.#{name}() => #{ret}"
         else
           msg = "#{@object.inspect}.#{name}(#{args}) => #{ret}"
