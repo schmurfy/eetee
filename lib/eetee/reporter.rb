@@ -1,6 +1,6 @@
 module EEtee
   class Reporter
-    attr_reader :failures, :errors, :assertion_count, :test_count
+    attr_reader :failures, :errors, :assertion_count, :empty, :test_count
     
     def initialize
       @errors = []

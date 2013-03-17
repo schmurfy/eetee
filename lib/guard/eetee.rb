@@ -3,6 +3,12 @@ require 'guard/guard'
 
 module Guard
   class Eetee < Guard
+    ERROR_COLOR = [255, 56, 84].freeze
+    EMPTY_COLOR = [0, 159, 193].freeze
+    FAILURES_COLOR = [226, 117, 0].freeze
+    SUCCESS_COLOR = [0, 219, 5].freeze
+    FADE_DURATION = 200
+
     
     def self.template(*)
       File.read(
@@ -14,6 +20,8 @@ module Guard
     # @param [Array<Guard::Watcher>] watchers the Guard file watchers
     # @param [Hash] options the custom Guard options
     def initialize(watchers = [], options = {})
+      @reporter_class = options.delete(:reporter)
+      @with_blink1 = options.delete(:blink1)      
       super
     end
 
@@ -26,6 +34,12 @@ module Guard
     # Called when `stop|quit|exit|s|q|e + enter` is pressed (when Guard quits).
     # @raise [:task_has_failed] when stop has failed
     def stop
+      if @with_blink1
+        @blink1 = Blink1.new
+        @blink1.open()
+        @blink1.set_rgb(0,0,0)
+        @blink1.close()
+      end
       puts "Guard::EEtee stopped."
     end
 
@@ -48,6 +62,12 @@ module Guard
     def run_on_changes(paths)
       pid = Kernel.fork do
         require 'eetee'
+        
+        if @reporter_class
+          EEtee.default_reporter_class = EEtee::Reporters.const_get(@reporter_class)
+        end
+
+        
         runner = EEtee::Runner.new
         runner.run_files(paths)
         runner.report_results()
@@ -56,6 +76,28 @@ module Guard
         failures = runner.failures.size + runner.errors.size
         
         focus_mode = runner.focus_mode
+        
+        if @with_blink1
+          blink1 = Blink1.new
+          blink1.open()
+          
+          if runner.errors.size > 0
+            blink1.fade_to_rgb(FADE_DURATION, *ERROR_COLOR)
+            
+          elsif runner.failures.size > 0
+            blink1.fade_to_rgb(FADE_DURATION, *FAILURES_COLOR)
+            
+          elsif runner.empty.size > 0
+            blink1.fade_to_rgb(FADE_DURATION, *EMPTY_COLOR)
+            
+          else
+            blink1.fade_to_rgb(FADE_DURATION, *SUCCESS_COLOR)
+            
+          end
+          
+          blink1.close()
+        end
+
         
         if failures > 0
           Notifier.notify("Specs: #{failures} Failures (#{tests} tests) #{focus_mode ? '(focus)' : ''}",

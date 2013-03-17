@@ -13,4 +13,5 @@ group(:test) do
   gem 'growl'
   
   gem 'eventmachine',    '~> 1.0.0'
+  gem 'rb-blink1'
 end
