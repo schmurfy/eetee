@@ -11,7 +11,7 @@ module EEteeTimeHelpers
     ##
     # Freeze the time, in this block Time.now
     # will always return the same value.
-    def freeze_time(t = Time.now)
+    def self.freeze_time(t = Time.now)
       Time.stubs(:now).returns(t)
       if block_given?
         begin
@@ -20,6 +20,10 @@ module EEteeTimeHelpers
           Time.unstub(:now)
         end
       end
+    end
+    
+    def freeze_time(*args, &block)
+      EEteeTimeHelpers.freeze_time(*args, &block)
     end
   end
   
