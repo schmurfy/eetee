@@ -36,6 +36,10 @@ module EEtee::EMSpec
     wakeup
   end
   
+  def new_fiber(&block)
+    Fiber.new(&block).resume
+  end
+  
   def run(&block)
     if EMSpec.context_fiber == Fiber.current
       block.call()
@@ -46,7 +50,8 @@ module EEtee::EMSpec
           @_reporter.add_error( EEtee::Error.new(err, test))
         end
         
-        EMSpec.context_fiber = Fiber.new do
+        new_fiber do
+          EMSpec.context_fiber = Fiber.current
           begin
             block.call()
             EM::stop_event_loop
@@ -55,7 +60,6 @@ module EEtee::EMSpec
           end
         end
         
-        EMSpec.context_fiber.resume
       end
       
     end
