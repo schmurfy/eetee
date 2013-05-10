@@ -40,7 +40,15 @@ module EEtee
           else
             @focus_mode = false
           end
-          instance_eval(data, path)
+          
+          begin
+            instance_eval(data, path)
+          rescue => err
+            test = EEtee::Test.new("(Loading)", @reporter){}
+            @reporter.add_error( EEtee::Error.new(err, test))
+            
+          end
+          
         else
           puts "!!! file does not exists: #{path}"
         end
