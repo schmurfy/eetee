@@ -65,7 +65,7 @@ module EEtee
       ret = @object.__send__(name, *args, &block)
       
       if !!ret == !!@invert
-        if ((name == :'==') || (name == :'!=')) && (!@object.nil? || !args[0].nil?)
+        if ((name == :'==') || (name == :'!=')) && (@object.is_a?(::String) && args[0].is_a?(::String))
           msg = "\n#{@object}\n#{name}\n#{args[0]}\n=> #{ret} (size: #{@object.size} / #{args[0].size})"
         elsif args.empty?
           msg = "#{@object.inspect}.#{name}() => #{ret}"
