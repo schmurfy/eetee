@@ -21,6 +21,7 @@ module Helpers
     end
     
     ret.class.should == error_class
+    ret
   end
 end
 
@@ -73,6 +74,15 @@ describe 'AssertionWrapper' do
         ensure_error_raised(EEtee::AssertionFailed) do
           ->{ @wrapper.to_zebra }.should.raise(NoMethodError)
         end
+      end
+      
+      should 'raise an error if block raises no errors' do
+        @obj.expects(:to_zebra).returns(2)
+        err = ensure_error_raised(EEtee::AssertionFailed) do
+          ->{ @wrapper.to_zebra }.should.raise(ArgumentError)
+        end
+        
+        err.message.should == "expected to raise ArgumentError, got no error"
       end
       
       should 'not raise an error if block raises expected error' do

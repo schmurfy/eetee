@@ -13,23 +13,23 @@ module EEtee
       
     end
     
-    def raise(error_class = RuntimeError)
+    def raise(expected_error_class = RuntimeError)
       @object.should.be_a ::Proc
-      
       err = nil
       begin
-        self.call()
+        @object.call()
       rescue => ex
         err = ex
       end
       
-      fail_message = err ? "#{err.class} (#{err.message})" : "no error"
+      error_message = err ? err.message : ""
+      fail_message = err ? "#{err.class} (#{error_message})" : "no error"
       
       invert_helper(
-        "expected to raise #{error_class}, got #{fail_message}",
-        "expected not to raise #{error_class} (#{err.message})"
+        "expected to raise #{expected_error_class}, got #{fail_message}",
+        "expected not to raise #{expected_error_class} (#{error_message})"
       ) do
-        err.class.should == error_class
+        err.class.should == expected_error_class
       end
       
       err
