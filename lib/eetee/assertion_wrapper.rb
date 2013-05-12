@@ -23,8 +23,10 @@ module EEtee
         err = ex
       end
       
+      fail_message = err ? "#{err.class} (#{err.message})" : "no error"
+      
       invert_helper(
-        "expected to raise #{error_class}, got #{err.class} (#{err.message})",
+        "expected to raise #{error_class}, got #{fail_message}",
         "expected not to raise #{error_class} (#{err.message})"
       ) do
         err.class.should == error_class
