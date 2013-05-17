@@ -16,5 +16,5 @@ Gem::Specification.new do |gem|
   
   gem.required_ruby_version  = '>= 1.9.3'
   
-  gem.add_dependency 'term-ansicolor', '~> 1.0.7'
+  gem.add_dependency 'term-ansicolor', '~> 1.1'
 end

@@ -4,6 +4,11 @@ gemspec
 
 gem 'rake'
 
+group(:development) do
+  gem 'rblineprof'
+  gem 'rb-blink1'
+end
+
 group(:test) do
   gem 'mocha',          '~> 0.12.0'
   
@@ -13,5 +18,4 @@ group(:test) do
   gem 'growl'
   
   gem 'eventmachine',    '~> 1.0.0'
-  gem 'rb-blink1'
 end
