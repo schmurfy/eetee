@@ -98,6 +98,14 @@ describe 'AssertionWrapper' do
           ->{ @wrapper.to_zebra }.should.not.raise(RuntimeError)
         end
       end
+      
+      should '[inverted] not raise an error if block raises no error' do
+        @obj.expects(:to_zebra).returns(3)
+        ensure_error_not_raised do
+          ->{ @wrapper.to_zebra }.should.not.raise
+        end
+      end
+
 
     end
     

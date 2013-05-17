@@ -100,7 +100,8 @@ module EEtee
         err = ex
       end
       
-      if err || @invert
+      # if (!@invert && err) || (@invert && !err)
+      if (@invert ^ err)
         ::Kernel.raise AssertionFailed.new(@invert ? invert_message : message)
       end
       
