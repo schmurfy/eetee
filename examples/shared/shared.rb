@@ -8,6 +8,11 @@ include EEtee
 shared(:valid_object) do |obj, n|
   should 'receive correct number' do
     n.should == 42
+    obj.should == 'string'
+  end
+  
+  should 'receive correct string' do
+    obj.should == 'string'
   end
   
   should 'respond to :to_i' do
@@ -24,11 +29,9 @@ end
 
 describe 'Tests' do
   before do
-    @obj = "string"
+    # clear database
   end
   
-  in_scope do
-    run_shared(:valid_object, @obj, 42)
-  end
+  run_shared(:valid_object, 'string', 42)
   
 end

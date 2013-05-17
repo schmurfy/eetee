@@ -37,6 +37,18 @@ describe 'Context' do
     a.should == 234
   end
   
+  should 'run arbitrary code in same context' do
+    a = nil
+    Thread.new do
+      EEtee::Context.new("a context", 0, @reporter) do
+        before{ @a = 42 }
+        # should("do nothing"){} # just to run the before block
+        in_scope{ a = @a }
+      end
+    end.join
+    a.should == 42
+  end
+  
   should 'allow tests to use the context description' do
     a = nil
     Thread.new do

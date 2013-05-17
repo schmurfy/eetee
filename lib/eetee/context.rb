@@ -33,15 +33,23 @@ module EEtee
     end
         
     def it(label, opts = {}, &block)
+      in_scope(opts) do
+        Test.new(label, @_reporter, &block)
+      end
+    end
+    
+  private
+    def in_scope(opts = {})
       if !@_focus_mode || opts[:focus]
         begin
           (@before || []).each{|b| instance_eval(&b) }
-          Test.new(label, @_reporter, &block)
+          yield()
         ensure
           (@after || []).each{|b| instance_eval(&b) }
         end
       end
     end
+    
   end
   
   class Context
@@ -83,13 +91,11 @@ module EEtee
     end
     
     def run_shared(name, *args)
-      Shared.run(name, @_reporter, @_level, *args)
+      in_scope do
+        Shared.run(name, @_reporter, @_level, *args)
+      end
     end
-    
-    def in_scope(&block)
-      instance_eval(&block)
-    end
-    
+        
   end
 
 end
