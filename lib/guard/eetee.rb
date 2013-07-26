@@ -22,6 +22,7 @@ module Guard
     def initialize(watchers = [], options = {})
       @reporter_class = options.delete(:reporter)
       @with_blink1 = options.delete(:blink1)      
+      @last_run_spec = nil
       super
     end
 
@@ -60,6 +61,18 @@ module Guard
     # @param [Array<String>] paths the changes files or paths
     # @raise [:task_has_failed] when run_on_change has failed
     def run_on_changes(paths)
+      if (paths.size == 1)
+        if !File.exists?(paths[0]) && @last_run_spec
+          puts "spec not found: #{paths[0]}"
+          puts "running last one."
+          paths << @last_run_spec
+        else
+          @last_run_spec = paths[0]
+        end
+      end
+      
+      
+      
       pid = Kernel.fork do
         require 'eetee'
         
